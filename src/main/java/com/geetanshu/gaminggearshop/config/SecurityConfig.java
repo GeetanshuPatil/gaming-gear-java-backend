@@ -58,7 +58,7 @@ public class SecurityConfig {
 
         configuration.setAllowedOrigins(java.util.List.of(
                 "http://localhost:5173",
-                "https://finale-gaming-gear-store.pages.dev/"
+                "https://finale-gaming-gear-store.pages.dev"
         ));
 
         configuration.setAllowedMethods(java.util.List.of(
