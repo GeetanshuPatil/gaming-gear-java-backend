@@ -50,6 +50,36 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public org.springframework.web.cors.CorsConfigurationSource corsConfigurationSource() {
+
+        org.springframework.web.cors.CorsConfiguration configuration =
+                new org.springframework.web.cors.CorsConfiguration();
+
+        configuration.setAllowedOrigins(java.util.List.of(
+                "http://localhost:5173",
+                "https://finale-gaming-gear-store.pages.dev/"
+        ));
+
+        configuration.setAllowedMethods(java.util.List.of(
+                "GET",
+                "POST",
+                "PUT",
+                "DELETE",
+                "OPTIONS"
+        ));
+
+        configuration.setAllowedHeaders(java.util.List.of("*"));
+
+        configuration.setAllowCredentials(true);
+
+        org.springframework.web.cors.UrlBasedCorsConfigurationSource source =
+                new org.springframework.web.cors.UrlBasedCorsConfigurationSource();
+
+        source.registerCorsConfiguration("/**", configuration);
+
+        return source;
+    }
     // needed for authentication (future login improvements)
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
