@@ -10,4 +10,8 @@ public class TestController {
     public String home() {
         return "Gaming Gear Shop Backend Running";
     }
+    @GetMapping("/health")
+    public String health() {
+        return "OK";
+    }
 }
