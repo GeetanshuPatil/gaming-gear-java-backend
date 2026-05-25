@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:5173")
+@CrossOrigin(origins = {"http://localhost:5173",
+"https://finale-gaming-gear-store.pages.dev"})
 public class ProductController {
 
     private final ProductService productService;
@@ -19,8 +20,19 @@ public class ProductController {
 
     @GetMapping("/products")
     public List<Product> getAllProducts() {
-        return productService.getAllProducts();
+
+        long start = System.currentTimeMillis();
+
+        List<Product> products = productService.getAllProducts();
+
+        long end = System.currentTimeMillis();
+
+        System.out.println("Products API took: " + (end - start) + " ms");
+        System.out.println("Total products returned: " + products.size());
+
+        return products;
     }
+
     @GetMapping("/products/{id}")
     public Product getProductById(@PathVariable Long id) {
         return productService.getProductById(id);
