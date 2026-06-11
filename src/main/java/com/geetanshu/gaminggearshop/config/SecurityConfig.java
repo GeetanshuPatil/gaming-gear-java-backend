@@ -1,5 +1,6 @@
 package com.geetanshu.gaminggearshop.config;
 
+import org.springframework.http.HttpMethod;
 import com.geetanshu.gaminggearshop.security.JwtFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,8 +34,16 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
 
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/products/**").permitAll()
                         .requestMatchers("/health").permitAll()
+
+                        // Public product APIs
+                        .requestMatchers(HttpMethod.GET, "/products").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
+
+                        // Admin-only product APIs
+                        .requestMatchers(HttpMethod.POST, "/products").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.PUT, "/products/**").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/products/**").hasRole("ADMIN")
 
                         .anyRequest().authenticated()
                 )

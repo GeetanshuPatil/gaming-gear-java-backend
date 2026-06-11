@@ -1,5 +1,6 @@
 package com.geetanshu.gaminggearshop.util;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -12,9 +13,9 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    @Value("${jwt.secret}")
-    private String secret;
-
+//    @Value("${jwt.secret}")
+//    private String secret;
+    
     private final String SECRET = "mysecretkeymysecretkeymysecretkey123456"; // must be long
 
     private final Key key = Keys.hmacShaKeyFor(SECRET.getBytes());
@@ -23,9 +24,10 @@ public class JwtUtil {
     private final long EXPIRATION_TIME = 1000 * 60 * 60 * 24;
 
     // 🔐 Generate Token
-    public String generateToken(String email) {
+    public String generateToken(String email, String role) {
         return Jwts.builder()
                 .setSubject(email)
+                .claim("role", role)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .signWith(key, SignatureAlgorithm.HS256)
@@ -34,24 +36,31 @@ public class JwtUtil {
 
     // 🔍 Extract email
     public String extractEmail(String token) {
+        return extractAllClaims(token).getSubject();
+    }
+
+    // Extract role
+    public String extractRole(String token) {
+        return extractAllClaims(token).get("role", String.class);
+    }
+
+    // Extract all claims
+    private Claims extractAllClaims(String token) {
         return Jwts.parserBuilder()
                 .setSigningKey(key)
                 .build()
                 .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+                .getBody();
     }
 
     // ✔ Validate token
     public boolean validateToken(String token) {
         try {
-            Jwts.parserBuilder()
-                    .setSigningKey(key)
-                    .build()
-                    .parseClaimsJws(token);
+            extractAllClaims(token);
             return true;
         } catch (Exception e) {
             return false;
         }
     }
+
 }
