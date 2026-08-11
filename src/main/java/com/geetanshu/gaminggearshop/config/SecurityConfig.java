@@ -35,10 +35,15 @@ public class SecurityConfig {
 
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/health").permitAll()
+                        
+                        .requestMatchers("/api/auth/**").permitAll()
 
                         // Public product APIs
                         .requestMatchers(HttpMethod.GET, "/products").permitAll()
                         .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
+
+                        //payment testing
+                        .requestMatchers(HttpMethod.POST, "/api/payment/create-order").permitAll()
 
                         // Admin-only product APIs
                         .requestMatchers(HttpMethod.POST, "/products").hasRole("ADMIN")
