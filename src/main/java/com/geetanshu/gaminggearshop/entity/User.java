@@ -3,6 +3,10 @@ package com.geetanshu.gaminggearshop.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+
+import java.util.List;
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -25,6 +29,18 @@ public class User {
     @JsonIgnore
     private Cart cart;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Order> orders = new ArrayList<>();
+
+    public List<Order> getOrders() {
+        return orders;
+    }
+
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+    
     public User() {}
 
     public User(Long id, String name, String email, String password, String role) {
