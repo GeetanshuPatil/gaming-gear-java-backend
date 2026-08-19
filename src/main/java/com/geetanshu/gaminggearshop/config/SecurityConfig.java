@@ -41,6 +41,8 @@ public class SecurityConfig {
                         // Public product APIs
                         .requestMatchers(HttpMethod.GET, "/products").permitAll()
                         .requestMatchers(HttpMethod.GET, "/products/**").permitAll()
+                        .requestMatchers(HttpMethod.HEAD, "/products").permitAll()
+                        .requestMatchers(HttpMethod.HEAD, "/products/**").permitAll()
 
                         //payment testing
                         .requestMatchers(HttpMethod.POST, "/api/payment/create-order").permitAll()
